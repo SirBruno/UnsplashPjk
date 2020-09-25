@@ -143,6 +143,43 @@
 			margin: 0 5px;
 			color: #999;
 		}
+
+		a.addToFavorites:hover {
+			color: #000;
+			transition: .3s;
+		}
+
+		a.addToFavorites {
+			text-decoration: none;
+			color: #1010109e;
+			background: linear-gradient(45deg, #FA9600, #D95100);
+			padding: 10px 20px;
+			border-radius: 100px;
+			font-weight: 500;
+			transition: .3s;
+			display: inline-block;
+			box-shadow: 0 4px 4px rgba(0, 0, 0, .3);
+			margin-top: 10px;
+		}
+
+		.alreadyFavorited {
+			text-decoration: none;
+			color: #1010109e;
+			background: linear-gradient(45deg, #999, #555);
+			padding: 10px 20px;
+			border-radius: 100px;
+			font-weight: 500;
+			transition: .3s;
+			display: inline-block;
+			margin-top: 10px;
+		}
+
+		.alreadyFavorited:hover {
+			text-decoration: none;
+			color: #fff;
+			background: #000;
+			transition: .3s;
+		}
 	</style>
 
 	<head>
@@ -190,15 +227,23 @@
 						<i>Image id:</i>
 						<p class="imageTitle">{!Data[key].id}</p>
 						<!-- <p>{!Data[key].author}</p> -->
+						<apex:outputPanel rendered="{!Data[key].isLiked != 'Liked'}">
+							<apex:form>
+								<apex:commandLink action="{!addToFavorites}" value="Add to favorites" styleclass="addToFavorites">
+									<apex:param name="imageId" value="{!Data[key].id}" assignTo="{!imageId}" />
+									<apex:param name="imageURL" value="{!Data[key].imgUrl}" assignTo="{!imageURL}" />
+								</apex:commandLink>
+							</apex:form>
+						</apex:outputPanel>
+						<apex:outputPanel rendered="{!Data[key].isLiked == 'Liked'}">
+							<apex:form>
+								<apex:commandLink action="{!removeFromFavorites}" value="Favorited" styleclass="alreadyFavorited">
+									<apex:param name="imageId" value="{!Data[key].id}" assignTo="{!imageId}" />
+									<apex:param name="imageURL" value="{!Data[key].imgUrl}" assignTo="{!imageURL}" />
+								</apex:commandLink>
+							</apex:form>
+						</apex:outputPanel>
 					</div>
-				</apex:column>
-				<apex:column>
-					<apex:form>
-						<apex:commandLink action="{!addToFavorites}" value="Add to favorites" styleclass="addToFavorites">
-							<apex:param name="imageId" value="{!Data[key].id}" assignTo="{!imageId}" />
-							<apex:param name="imageURL" value="{!Data[key].imgUrl}" assignTo="{!imageURL}" />
-						</apex:commandLink>
-					</apex:form>
 				</apex:column>
 			</apex:pageBlockTable>
 		</apex:pageBlock>
